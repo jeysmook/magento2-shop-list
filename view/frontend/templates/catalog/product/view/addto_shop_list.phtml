@@ -1,0 +1,24 @@
+<?php
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+?>
+<?php /** @var $block \Jeysmook\ShopList\Block\Catalog\Product\View\AddToShopList */ ?>
+<div id="addtoShopList" data-bind="scope: 'addtoShopList'" class="addto-shop-list-container">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <script type="text/x-magento-init">
+        {
+            "#addtoShopList": {
+                "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout(); ?>
+            }
+        }
+    </script>
+    <script>
+        window.addtoShopListConfig = <?php /* @escapeNotVerified */ echo $block->getSerializedConfig(); ?>;
+        window.isCustomerLoggedIn = window.addtoShopListConfig.customer.isLoggedIn;
+    </script>
+</div>
+<div id="addToShopListPopupWrapper"></div>

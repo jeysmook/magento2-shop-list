@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="shoppinglist"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Jeysmook\ShopList\Block\Listing\View"
+                   name="customer.shoplist.view"
+                   template="Jeysmook_ShopList::listing/view.phtml"
+                   cacheable="false">
+                <!-- Product renderers -->
+                <block class="Jeysmook\ShopList\Block\Listing\View\Product\Renderer\DefaultRenderer"
+                       name="customer.shoplist.view.renderer.default"
+                       as="renderer_default"
+                       template="Jeysmook_ShopList::listing/view/product/renderer/default.phtml" />
+                <block class="Jeysmook\ShopList\Block\Listing\View\Product\Renderer\GroupedRenderer"
+                       name="customer.shoplist.view.renderer.grouped"
+                       as="renderer_grouped"
+                       template="Jeysmook_ShopList::listing/view/product/renderer/grouped.phtml" />
+                <block class="Jeysmook\ShopList\Block\Listing\View\Product\Renderer\ConfigurableRenderer"
+                       name="customer.shoplist.view.renderer.configurable"
+                       as="renderer_configurable"
+                       template="Jeysmook_ShopList::listing/view/product/renderer/configurable.phtml" />
+
+                <block class="Jeysmook\ShopList\Block\Listing\View\Qty"
+                       name="customer.shoplist.view.qty"
+                       as="qty"
+                       template="Jeysmook_ShopList::listing/view/qty.phtml"
+                       cacheable="false" />
+            </block>
+        </referenceContainer>
+    </body>
+</page>

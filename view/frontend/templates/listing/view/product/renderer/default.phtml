@@ -1,0 +1,42 @@
+<?php
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+?>
+<?php /** @var \Jeysmook\ShopList\Block\Listing\View\Product\Renderer\DefaultRenderer $block */ ?>
+<td class="product-info-cell">
+    <a href="<?php echo $block->getProduct()->getProductUrl(); ?>"
+       title="<?php echo $block->escapeHtml($block->getProduct()->getName()); ?>">
+        <img src="<?php echo $block->getImageUrl(); ?>"
+             alt="<?php echo $block->escapeHtml($block->getProduct()->getName()); ?>" />
+    </a>
+    <div class="product-details">
+        <strong>
+            <a href="<?php echo $block->getProduct()->getProductUrl(); ?>">
+                <?php echo $block->escapeHtml($block->getProduct()->getName()); ?>
+            </a>
+        </strong>
+        <div class="price-box-wrapper"><?php echo $block->getPriceHtml(); ?></div>
+        <?php if (count($block->getOptions()) > 0): ?>
+            <div class="options">
+                <div class="options-wrap">
+                    <?php foreach ($block->getOptions() as $option): ?>
+                        <div class="options-row">
+                            <strong><?php echo $block->escapeHtml($option->getLabel()) ?></strong>
+                            <span>
+                                <?php if (is_array($option->getValue())): ?>
+                                    <?php echo nl2br(implode("\n", $option->getValue())) ?>
+                                <?php else: ?>
+                                    <?php echo $option->getValue(); ?>
+                                <?php endif; ?>
+                            </span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</td>

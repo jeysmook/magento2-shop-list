@@ -1,0 +1,26 @@
+<?php
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+?>
+<script>
+    require([
+        'Magento_Customer/js/customer-data',
+        'domReady!'
+    ], function(customerData) {
+        var updateSections = function () {
+            // update minicart section
+            var sections = ['directory-data', 'customer', 'cart'];
+            customerData.invalidate(sections);
+            customerData.reload(sections, false);
+        };
+
+        var t1 = setTimeout(function () {
+            updateSections();
+            clearTimeout(t1);
+        }, 1000);
+    });
+</script>

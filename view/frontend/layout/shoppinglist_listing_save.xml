@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="shoppinglist"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Jeysmook\ShopList\Block\Listing\Form"
+                   name="customer.shoplist.edit"
+                   template="Jeysmook_ShopList::listing/form.phtml"
+                   cacheable="false" />
+        </referenceContainer>
+    </body>
+</page>

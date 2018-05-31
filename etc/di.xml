@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Jeysmook\ShopList\Api\Data\ItemAdditionalInterface" type="Jeysmook\ShopList\Model\ItemAdditional" />
+    <preference for="Jeysmook\ShopList\Api\Data\ItemInterface" type="Jeysmook\ShopList\Model\Item" />
+    <preference for="Jeysmook\ShopList\Api\Data\ListInterface" type="Jeysmook\ShopList\Model\SList" />
+    <preference for="Jeysmook\ShopList\Api\Data\ListSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="Jeysmook\ShopList\Api\CartServiceInterface" type="Jeysmook\ShopList\Model\CartService" />
+    <preference for="Jeysmook\ShopList\Api\ListRepositoryInterface" type="Jeysmook\ShopList\Model\ListRepository" />
+    <preference for="Jeysmook\ShopList\Api\ItemRepositoryInterface" type="Jeysmook\ShopList\Model\ItemRepository" />
+    <preference for="Jeysmook\ShopList\Api\ListManagementInterfact" type="Jeysmook\ShopList\Model\ListManagement" />
+
+    <!-- Configure collection processor for shop lists -->
+    <virtualType name="Jeysmook\ShopList\Model\Api\SearchCriteria\CollectionProcessor\ListFilterProcessor" type="Magento\Framework\Api\SearchCriteria\CollectionProcessor\FilterProcessor">
+        <arguments>
+            <argument name="customFilters" xsi:type="array">
+                <item name="store_id" xsi:type="object">Jeysmook\ShopList\Model\Api\SearchCriteria\CollectionProcessor\FilterProcessor\ListStoreFilter</item>
+                <item name="customer_id" xsi:type="object">Jeysmook\ShopList\Model\Api\SearchCriteria\CollectionProcessor\FilterProcessor\ListCustomerFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Jeysmook\ShopList\Model\Api\SearchCriteria\ListCollectionProcessor" type="Magento\Framework\Api\SearchCriteria\CollectionProcessor">
+        <arguments>
+            <argument name="processors" xsi:type="array">
+                <item name="filters" xsi:type="object">Jeysmook\ShopList\Model\Api\SearchCriteria\CollectionProcessor\ListFilterProcessor</item>
+                <item name="sorting" xsi:type="object">Magento\Framework\Api\SearchCriteria\CollectionProcessor\SortingProcessor</item>
+                <item name="pagination" xsi:type="object">Magento\Framework\Api\SearchCriteria\CollectionProcessor\PaginationProcessor</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Jeysmook\ShopList\Model\ListRepository">
+        <arguments>
+            <argument name="collectionProcessor" xsi:type="object">Jeysmook\ShopList\Model\Api\SearchCriteria\ListCollectionProcessor</argument>
+        </arguments>
+    </type>
+
+    <type name="Jeysmook\ShopList\Model\SList\Validator">
+        <arguments>
+            <argument name="validators" xsi:type="array"></argument>
+        </arguments>
+    </type>
+
+    <type name="Jeysmook\ShopList\Model\Item\Validator">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="list_exist" xsi:type="object">Jeysmook\ShopList\Model\Item\Validator\ListExist</item>
+                <item name="product_exist" xsi:type="object">Jeysmook\ShopList\Model\Item\Validator\ProductExist</item>
+                <item name="unique_item" xsi:type="object">Jeysmook\ShopList\Model\Item\Validator\UniqueItem</item>
+                <item name="by_request" xsi:type="object">Jeysmook\ShopList\Model\Item\Validator\ByRequest</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

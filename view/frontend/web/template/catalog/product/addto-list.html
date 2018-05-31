@@ -1,0 +1,23 @@
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<!-- ko if: isVisible -->
+
+<div class="product-addto-links" data-role="add-to-links">
+    <a class="action add-to-list-link" data-bind="{event: {click: function(data, event) { addToShopListHandle(event); }}}">
+        <span data-bind="i18n: 'Add to shopping list'"></span>
+    </a>
+</div>
+<!-- ko foreach: getRegion('addtoShopListPopup') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!--/ko-->
+<!-- ko foreach: getRegion('addtoShopListLoginPopup') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!--/ko-->
+
+<!--/ko-->

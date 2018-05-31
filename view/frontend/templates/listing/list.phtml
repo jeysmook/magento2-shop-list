@@ -1,0 +1,207 @@
+<?php
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+?>
+<?php /** @var \Jeysmook\ShopList\Block\Listing\SList $block */ ?>
+
+<div class="block">
+    <div class="block-title">
+        <a href="<?php echo $block->getSaveUrl(); ?>"
+           class="action primary action-create-list"
+           title="<?php echo $block->escapeHtml(__('Create List')); ?>">
+            <span><?php echo $block->escapeHtml(__('Create List')); ?></span>
+        </a>
+    </div>
+    <div class="block-content">
+        <?php if (count($block->getLists()) > 0): ?>
+        <form id="shoplists-form" method="post">
+            <?php echo $block->getBlockHtml('formkey'); ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox"
+                                   id="uid-check-all"
+                                   title="<?php echo $block->escapeHtml(__('Check all')); ?>">
+                            <label for="uid-check-all" class="label"><span></span></label>
+                        </th>
+                        <th><?php echo $block->escapeHtml(__('Title')); ?></th>
+                        <th><?php echo $block->escapeHtml(__('Description')); ?></th>
+                        <th><?php echo $block->escapeHtml(__('Created at')); ?></th>
+                        <th><?php echo $block->escapeHtml(__('Actions')); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php /** @var \Jeysmook\ShopList\Api\Data\ListInterface $list */ foreach ($block->getLists() as $list): ?>
+                    <tr>
+                        <td>
+                            <input id="uid-<?php echo $list->getId(); ?>"
+                                   type="checkbox"
+                                   data-checked-elms="1"
+                                   name="items[]"
+                                   value="<?php echo $list->getId() ?>" />
+                            <label for="uid-<?php echo $list->getId(); ?>" class="label"><span></span></label>
+                        </td>
+                        <td>
+                            <?php if ($list->getProductsCount() > 0): ?>
+                                <a href="<?php echo $block->getViewUrl($list); ?>"
+                                   title="<?php echo $block->escapeHtml($list->getTitle()) ?>">
+                                    <?php echo $block->escapeHtml($list->getTitle()) ?>
+                                </a>
+                            <?php else: ?>
+                                <span><?php echo $block->escapeHtml($list->getTitle()) ?></span>
+                            <?php endif; ?>
+                        </td>
+                        <td><?php echo $block->escapeHtml($list->getDescription()) ?></td>
+                        <td><?php echo $block->getFormatedDate($list->getCreatedAt()) ?></td>
+                        <td>
+                            <div class="actions-box">
+                                <button onclick="this.parentNode.classList.toggle('active'); return false;"
+                                        onblur="
+                                        if (!event.relatedTarget) {
+                                            this.parentNode.classList.remove('active');
+                                        }
+                                        return false;">
+                                    <?php echo __('Select'); ?>
+                                </button>
+                                <div class="action-list-holder">
+                                    <ul>
+                                        <?php if ($list->getProductsCount() > 0): ?>
+                                        <li>
+                                            <a href="<?php echo $block->getAddToCartUrl($list); ?>"><?php echo __('Add to cart') ?></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $block->getViewUrl($list); ?>">
+                                                <span><?php echo __('View') ?></span>
+                                                <span>(<?php echo $list->getProductsCount() ?>)</span>
+                                            </a>
+                                        </li>
+                                        <?php endif; ?>
+                                        <li>
+                                            <a href="<?php echo $block->getSaveUrl($list); ?>"><?php echo __('Edit') ?></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $block->getDuplicateUrl($list); ?>"><?php echo __('Duplicate') ?></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $block->getDeleteUrl($list); ?>" data-remove-elms="1"><?php echo __('Remove')?></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+                </tbody>
+            </table>
+            <div class="mass-actions">
+                <button type="button"
+                        id="uid-items-to-cart"
+                        title="<?php echo $block->escapeHtml(__('Add selected to cart')); ?>">
+                    <span><?php echo $block->escapeHtml(__('Add selected to cart')); ?></span>
+                </button>
+                <button type="button"
+                        id="uid-items-delete"
+                        title="<?php echo $block->escapeHtml(__('Delete selected')); ?>">
+                    <span><?php echo $block->escapeHtml(__('Delete selected')); ?></span>
+                </button>
+            </div>
+        </form>
+        <?php else: ?>
+        <div class="message info empty"><span><?php echo __('You do not have shopping lists.') ?></span></div>
+        <?php endif; ?>
+    </div>
+    <div class="actions-toolbar">
+        <div class="secondary">
+            <a class="action back" href="<?php echo $block->getBackUrl(); ?>"><?php echo __('Back'); ?></a>
+        </div>
+    </div>
+</div>
+<script>
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/alert',
+        'Magento_Ui/js/modal/confirm',
+        'mage/translate'
+    ], function($, alert, confirm, $t) {
+        var $listForm = $('#shoplists-form'),
+            $btnMassAddToCart = $('#uid-items-to-cart'),
+            $btnMassDelete = $('#uid-items-delete');
+
+        $listForm.on('submit', function (e) {
+            var checked;
+            if (!$(this).attr('action')) {
+                e.preventDefault();
+            }
+
+            checked = $('input[data-checked-elms="1"]:checked');
+            if (checked.length === 0) {
+                e.preventDefault();
+                alert({
+                    title: $t('Attention'),
+                    content: $t('Please selecte items to continue.'),
+                });
+            }
+        });
+
+        $btnMassAddToCart.on('click', function (e) {
+            e.preventDefault();
+            $listForm.attr('action', '<?php echo $block->getMassAddToCartUrl(); ?>');
+            $listForm.attr('data-is-mass', '0');
+            $listForm.submit();
+        });
+
+        $btnMassDelete.on('click', function (e) {
+            e.preventDefault();
+
+            var checked = $('input[data-checked-elms="1"]:checked');
+            if (checked.length > 0) {
+                confirm({
+                    title: $t('Remove shopping lists'),
+                    content: $t('Are you sure you want to remove shopping lists?'),
+                    actions: {
+                        /** @inheritdoc */
+                        confirm: function () {
+                            $listForm.attr('action', '<?php echo $block->getMassDeleteUrl(); ?>');
+                            $listForm.submit();
+                        }
+                    }
+                });
+            } else {
+                alert({
+                    title: $t('Attention'),
+                    content: $t('Please selecte items to continue.'),
+                });
+            }
+        });
+
+        // add confirmation dialog for remove functionality
+        $('a[data-remove-elms="1"]').on('click', function (e) {
+            var $target = $(this),
+                removeUrl = $target.attr('href');
+
+            e.preventDefault();
+
+            confirm({
+                title: $t('Remove shopping list'),
+                content: $t('Are you sure you want to remove shopping list?'),
+                actions: {
+                    /** @inheritdoc */
+                    confirm: function () {
+                        location.href = removeUrl;
+                    }
+                }
+            });
+        });
+
+        // checked/unchecked all items
+        $('#uid-check-all').on('click', function () {
+            var isChecked = Boolean(this.checked);
+            $('input[data-checked-elms="1"]').prop('checked', isChecked);
+        });
+    });
+</script>

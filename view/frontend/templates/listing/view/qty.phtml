@@ -1,0 +1,22 @@
+<?php
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+?>
+<?php /** @var \Jeysmook\ShopList\Block\Listing\View\Qty $block */ ?>
+<td class="product-qty-cell">
+    <?php if ($block->getProduct()->isVisibleInSiteVisibility() && $block->getProduct()->isSaleable()): ?>
+        <p>
+            <input type="number"
+                   class="input-text qty"
+                   name="list[items][<?php echo $block->getItem()->getId() ?>][qty]"
+                   data-validate="{'required':true,'required-number':true,'validate-item-quantity':{'minAllowed':<?php echo $block->getMinAllowed(); ?>,'maxAllowed':<?php echo $block->getMaxAllowed(); ?>,'qtyIncrements':<?php echo $block->getQtyIncrements(); ?>}}"
+                   value="<?php echo (int)$block->getItem()->getQty() ?: 1 ?>" />
+        </p>
+    <?php else: ?>
+        <p class="availability out-of-stock"><span><?php echo __('Out of stock') ?></span></p>
+    <?php endif; ?>
+</td>

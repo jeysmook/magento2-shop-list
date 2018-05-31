@@ -1,0 +1,116 @@
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<div class="block-addto-list-popup"
+     data-bind="afterRender: setModalElement, blockLoader: isLoading"
+     style="display: none">
+    <div class="block-addto-list-messages">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+    </div>
+    <div class="flexible">
+        <div class="flexible__side">
+            <a class="product-image" data-bind="attr: {href: getProduct().url, title: getProduct().name}">
+                <img data-bind="attr: {src: getProduct().image, alt: getProduct().name}" />
+            </a>
+        </div>
+        <div class="flexible__side check-lists">
+            <div class="check-lists-holder jcf-scrollable">
+                <h2 class="product-name">
+                    <a data-bind="text: getProduct().name, attr: {href: getProduct().url, title: getProduct().name}"></a>
+                </h2>
+                <h4 data-bind="i18n: 'Shopping lists:'"></h4>
+                <form method="post" data-bind="attr: {id: 'addto-shoplist-form', action: ''}">
+                    <input type="hidden" name="product_id" data-bind="value: getProduct().entity_id" />
+                    <ul class="current-lists">
+                        <!-- ko foreach: { data: getLists(), as: 'list' } -->
+                        <li>
+                            <label>
+                                <input type="radio"
+                                       name="list_id"
+                                       data-validate="{'validate-one-required-by-name':true}"
+                                       data-bind="{
+                                           event: {
+                                               focus: function(data, event) { $parent.isShowAddNewList(false) }
+                                           },
+                                           attr: {value: id, id: 'listId' + id}
+                                       }" />
+                                <span>
+                                    <!-- ko text: title --><!-- /ko --> (<!-- ko text: $parent.getProductsCount(list) --><!-- /ko -->)
+                                </span>
+                            </label>
+                        </li>
+                        <!-- /ko -->
+
+                        <!-- ko if: getListsLength() === 0 && !isShowAddNewList() -->
+                        <li>
+                            <p data-bind="i18n: 'You do not have shopping lists.'"></p>
+                        </li>
+                        <!-- /ko -->
+
+                        <!-- ko if: isShowAddNewList -->
+                        <li>
+                            <label>
+                                <input type="radio"
+                                       name="list_id"
+                                       data-validate="{'validate-one-required-by-name':true}"
+                                       data-bind="attr: {value: -1, checked: isShowAddNewList}" />
+                            </label>
+                            <label>
+                                <input type="text"
+                                       name="additional[new_shop_title]"
+                                       data-validate="{required:true}"
+                                       data-bind="attr: {placeholder: $t('Shopping list title')}" />
+                            </label>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
+                    <div class="list-actions">
+                        <a href="#" data-bind="click: toggleIsShowAddNewList">
+                            <!-- ko if: !isShowAddNewList() -->
+                            <span data-bind="i18n: 'Add list'"></span>
+                            <span class="icon-plus">+</span>
+                            <!-- /ko -->
+                            <!-- ko if: isShowAddNewList() -->
+                            <span data-bind="i18n: 'Remove list'"></span>
+                            <span class="icon-minus">-</span>
+                            <!-- /ko -->
+                        </a>
+                    </div>
+                    <div class="field qty required">
+                        <label class="label" for="shopListItemQty"><span data-bind="i18n: 'Qty'"></span></label>
+                        <div class="control">
+                            <input type="number"
+                                   name="qty"
+                                   id="shopListItemQty"
+                                   class="input-text input-qty"
+                                   data-bind="{
+                                       value: getDefaultQty(),
+                                       attr: {
+                                           placeholder: $t('Qty'),
+                                           'data-validate': getRulesForQty()
+                                       }
+                                   }" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button class="action-primary secondary" type="button" data-bind="click: function(data, event) { closeHandle(event) }">
+                <span data-bind="i18n: 'Close'"></span>
+            </button>
+            <button class="action secondary" type="button" data-bind="click: function(data, event) { saveHandle(event) }">
+                <span data-bind="i18n: 'Save'"></span>
+            </button>
+        </div>
+    </div>
+</div>

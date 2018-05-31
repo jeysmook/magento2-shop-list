@@ -1,0 +1,53 @@
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<div class="block-login-for-shop-list"
+     data-bind="afterRender: setModalElement, blockLoader: isLoading"
+     style="display: none">
+    <div class="block-login-messages">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+    </div>
+    <form class="form form-login"
+          method="post"
+          data-bind="event: {submit: login}"
+          id="login-form-for-shop-list">
+        <div class="fieldset login" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+            <div class="field email required">
+                <label class="label" for="shoplistEmail"><span data-bind="i18n: 'Email Address'"></span></label>
+                <div class="control">
+                    <input name="username"
+                           id="shoplistEmail"
+                           type="email"
+                           class="input-text"
+                           data-bind="attr: {autocomplete: autocomplete}"
+                           data-validate="{required:true, 'validate-email':true}">
+                </div>
+            </div>
+            <div class="field password required">
+                <label for="shoplistPass" class="label"><span data-bind="i18n: 'Password'"></span></label>
+                <div class="control">
+                    <input name="password"
+                           type="password"
+                           class="input-text"
+                           id="shoplistPass"
+                           data-bind="attr: {autocomplete: autocomplete}"
+                           data-validate="{required:true}">
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" class="action action-login secondary" name="send">
+                        <span data-bind="i18n: 'Sign In'"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

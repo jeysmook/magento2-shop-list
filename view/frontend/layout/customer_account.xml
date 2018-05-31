@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Jeysmook\ShopList\Block\Customer\Account\Link" name="shop.list.link">
+                <arguments>
+                    <argument name="path" xsi:type="string">shoppinglist</argument>
+                    <argument name="label" xsi:type="string">My Shopping Lists</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

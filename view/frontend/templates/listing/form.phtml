@@ -1,0 +1,66 @@
+<?php
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+?>
+<?php /** @var \Jeysmook\ShopList\Block\Listing\Form $block */ ?>
+<div class="block">
+    <div class="block-content">
+    <?php echo $block->getChildHtml('form_fields_before')?>
+        <form action="<?php echo $block->getSubmitUrl() ?>"
+              method="post"
+              id="shop-list-form"
+              enctype="multipart/form-data"
+              data-hasrequired="<?php echo $block->escapeHtmlAttr(__('* Required Fields')) ?>">
+        	<fieldset class="fieldset">
+            	<?php echo $block->getBlockHtml('formkey'); ?>
+            	<div class="field field-title required">
+            		<label class="label" for="title">
+                		<span><?php echo __('Title') ?></span>
+            		</label>
+					<div class="control">
+						<input type="text"
+                               id="title"
+                               name="list[title]"
+                               title="<?php echo $block->escapeHtml(__('Title')) ?>"
+                               class="input-text required-entry"
+                               data-validate="{required:true}"
+                               aria-required="true"
+                               value="<?php echo $block->escapeHtml($block->getList()->getTitle()); ?>" />
+					</div>
+            	</div>
+            	<div class="field field-description">
+            		<label class="label" for="description">
+                		<span><?php echo __('Description') ?></span>
+            		</label>
+					<div class="control">
+						<textarea name="list[description]" title="<?php echo $block->escapeHtml(__('Description')) ?>"><?php echo $block->escapeHtml($block->getList()->getDescription()); ?></textarea>
+					</div>
+            	</div>
+            	<div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit"
+                                class="action save primary"
+                                title="<?php echo $block->escapeHtml(__('Save')) ?>">
+                            <span><?php echo $block->escapeHtml(__('Save')) ?></span>
+                        </button>
+                    </div>
+                    <div class="secondary">
+                        <a class="action back" href="<?php echo $block->escapeUrl($block->getBackUrl()) ?>"><?php echo __('Back') ?></a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#shop-list-form": {
+            "validation": {}
+        }
+    }
+</script>

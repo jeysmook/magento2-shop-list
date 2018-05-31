@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Jeysmook\ShopList\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="customer_config" xsi:type="object">Jeysmook\ShopList\Model\ConfigProvider\CurrentCustomerData</item>
+                <item name="product_config" xsi:type="object">Jeysmook\ShopList\Model\ConfigProvider\CurrentProductData</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Jeysmook\ShopList\Model\SList\Validator">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="access" xsi:type="object">Jeysmook\ShopList\Model\SList\Validator\Access</item>
+                <item name="store" xsi:type="object">Jeysmook\ShopList\Model\SList\Validator\Store</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

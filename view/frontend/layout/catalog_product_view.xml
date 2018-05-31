@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Shopping list extension
+ *
+ * Copyright © Dmitry Kaplin - All rights reserved.
+ * See LICENSE.txt bundled with this module for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="view.addto.wishlist" remove="true" />
+        <referenceBlock name="product.info.addto">
+            <block class="Jeysmook\ShopList\Block\Catalog\Product\View\AddToShopList"
+                   name="addto.shop.list"
+                   after="view.addto.requisition"
+                   template="Jeysmook_ShopList::catalog/product/view/addto_shop_list.phtml"
+                   cacheable="false">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="addtoShopList" xsi:type="array">
+                                <item name="component" xsi:type="string">Jeysmook_ShopList/js/view/catalog/product/addto-list</item>
+                                <item name="children" xsi:type="array">
+                                    <item name="addtoShopListLoginPopup" xsi:type="array">
+                                        <item name="component" xsi:type="string">Jeysmook_ShopList/js/view/login-popup</item>
+                                        <item name="displayArea" xsi:type="string">addtoShopListLoginPopup</item>
+                                        <item name="children" xsi:type="array">
+                                            <item name="messages" xsi:type="array">
+                                                <item name="component" xsi:type="string">Magento_Ui/js/view/messages</item>
+                                                <item name="displayArea" xsi:type="string">messages</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                    <item name="addtoShopListPopup" xsi:type="array">
+                                        <item name="component" xsi:type="string">Jeysmook_ShopList/js/view/addto-list-popup</item>
+                                        <item name="displayArea" xsi:type="string">addtoShopListPopup</item>
+                                        <item name="children" xsi:type="array">
+                                            <item name="messages" xsi:type="array">
+                                                <item name="component" xsi:type="string">Magento_Ui/js/view/messages</item>
+                                                <item name="displayArea" xsi:type="string">messages</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>
